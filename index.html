@@ -22,7 +22,6 @@
   .logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg,#2563eb,#3b82f6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
   .logo span { color: var(--blue); }
   .nav-right { display: flex; align-items: center; gap: 16px; }
-  .user-chip { display: flex; align-items: center; gap: 10px; }
   .user-name { font-size: 13px; font-weight: 600; }
   .user-role { font-size: 11px; color: var(--text-muted); text-align: right; }
   .avatar { width: 34px; height: 34px; background: var(--blue-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; }
@@ -51,13 +50,10 @@
 
   /* SIDEBAR */
   .sidebar { width: 220px; background: var(--white); border-right: 1px solid var(--border); padding: 24px 0; position: sticky; top: 60px; height: calc(100vh - 60px); display: flex; flex-direction: column; flex-shrink: 0; }
-  .sidebar-nav { flex: 1; }
   .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 14px; color: var(--text-secondary); cursor: pointer; border-right: 2px solid transparent; transition: background 0.15s, color 0.15s; user-select: none; }
   .sidebar-item:hover { background: var(--bg); color: var(--text-primary); }
   .sidebar-item.active { color: var(--blue); font-weight: 500; background: var(--blue-light); border-right-color: var(--blue); }
   .sidebar-icon { font-size: 16px; width: 20px; text-align: center; }
-  .sidebar-bottom { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px; }
-  .esci-btn { color: var(--text-muted) !important; }
 
   /* MAIN */
   .main { flex: 1; padding: 40px 48px; transition: margin-right 0.3s ease; min-width: 0; }
@@ -148,7 +144,7 @@
         <div class="lang-item" data-lang="da"><span>🇩🇰</span> Dansk</div>
       </div>
     </div>
-    <div class="user-chip">
+    <div style="display:flex;align-items:center;gap:10px">
       <div><div class="user-name">Thomas Demo</div><div class="user-role">Admin</div></div>
       <div class="avatar">👤</div>
     </div>
@@ -157,7 +153,7 @@
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-nav" id="sidebarNav"></div>
+    <div id="sidebarNav"></div>
   </aside>
 
   <main class="main" id="main">
@@ -207,51 +203,48 @@
   <div class="modal-card">
     <div id="modalFormWrap">
       <div class="modal-top">
-        <h3 id="modalTitle">Richiedi una demo gratuita</h3>
+        <h3 id="modalTitle"></h3>
         <button id="closeModalBtn">✕</button>
       </div>
-      <p class="modal-sub" id="modalSub">Compila il modulo e ti contatteremo al più presto.</p>
+      <p class="modal-sub" id="modalSub"></p>
       <div class="form-row">
-        <div class="form-group"><label id="lblNome">Nome e Cognome *</label><input type="text" id="fNome" placeholder="Mario Rossi"></div>
-        <div class="form-group"><label id="lblAzienda">Azienda</label><input type="text" id="fAzienda" placeholder="Rossi Srl"></div>
+        <div class="form-group"><label id="lblNome"></label><input type="text" id="fNome"></div>
+        <div class="form-group"><label id="lblAzienda"></label><input type="text" id="fAzienda"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label id="lblEmail">Email *</label><input type="email" id="fEmail" placeholder="mario@email.com"></div>
-        <div class="form-group"><label id="lblTel">Telefono</label><input type="tel" id="fTel" placeholder="+39 333 000000"></div>
+        <div class="form-group"><label id="lblEmail"></label><input type="email" id="fEmail"></div>
+        <div class="form-group"><label id="lblTel"></label><input type="tel" id="fTel"></div>
       </div>
-      <div class="form-group"><label id="lblMsg">Messaggio</label><textarea id="fMsg" placeholder="Descrivici brevemente la tua attività..."></textarea></div>
-      <button class="modal-btn" id="submitBtn">Invia richiesta →</button>
+      <div class="form-group"><label id="lblMsg"></label><textarea id="fMsg"></textarea></div>
+      <button class="modal-btn" id="submitBtn"></button>
     </div>
     <div id="modalSuccessWrap" class="modal-success" style="display:none">
       <div class="s-icon">✅</div>
-      <h4 id="successTitle">Richiesta inviata!</h4>
-      <p id="successMsg">Grazie per il tuo interesse. Ti contatteremo al più presto.</p>
+      <h4 id="successTitle"></h4>
+      <p id="successMsg"></p>
     </div>
   </div>
 </div>
 
 <script>
 var currentLang = 'it';
-var activeMenuEl = null;
-var activeSidebarEl = null;
 var openKey = null;
-
-var ALL_KEYS = ['clienti','personale','progetti','subappalti','rapportini','sommario','profilo','assistenza'];
+var ALL_KEYS  = ['clienti','personale','progetti','subappalti','rapportini','sommario','profilo','assistenza'];
 var MENU_KEYS = ['clienti','personale','progetti','subappalti','rapportini','sommario'];
 var MENU_COLORS = ['ic-green','ic-red','ic-orange','ic-teal','ic-blue','ic-purple'];
 
 var I18N = {
   it: {
     sidebar:['Clienti','Personale','Progetti','Subappalti','Rapportini','Sommario Lavori','Profilo','Assistenza'],
-    esci:'Esci', sectionLabel:'Funzionalità Chiave', demoCta:'Richiedi una demo gratuita →',
+    sectionLabel:'Funzionalità Chiave', demoCta:'Richiedi una demo gratuita →',
     footerRights:'Tutti i diritti riservati', overlayTitle:'Benvenuto in JobsReport',
-    overlaySub:'Scegli la tua lingua per iniziare la presentazione',
-    modal:{title:'Richiedi una demo gratuita', sub:'Compila il modulo e ti contatteremo al più presto.', nome:'Nome e Cognome *', azienda:'Azienda', email:'Email *', tel:'Telefono', msg:'Messaggio', btn:'Invia richiesta →', successTitle:'Richiesta inviata!', successMsg:'Grazie per il tuo interesse. Ti contatteremo al più presto.', alert:'Per favore compila Nome e Email.'},
+    overlaySub:'Scegli la tua lingua per iniziare',
     hero:{tag:"Il valore dell'esperienza", title:'Rapportini e controllo costi in tempo reale', desc:"Realizzato dopo oltre 30 anni di esperienza sul campo. JobsReport è lo strumento nato dall'esigenza reale di chi gestisce il cantiere ogni giorno."},
+    modal:{title:'Richiedi una demo gratuita', sub:'Compila il modulo e ti contatteremo al più presto.', nome:'Nome e Cognome *', azienda:'Azienda', email:'Email *', tel:'Telefono', msg:'Messaggio', btn:'Invia richiesta →', successTitle:'Richiesta inviata!', successMsg:'Grazie per il tuo interesse. Ti contatteremo al più presto.', alert:'Per favore compila Nome e Email.'},
     menu:[
       {icon:'👥',title:'Anagrafica Clienti',desc:'Gestione contatti collegata a progetti e rapportini.'},
       {icon:'🛡️',title:'Gestione Personale',desc:'Onboarding multilingua, ruoli e controllo costi.'},
-      {icon:'💼',title:'Progetti e Cantieri',desc:'Gestione flessibile di commesse clienti e progetti interni.'},
+      {icon:'💼',title:'Progetti e Cantieri',desc:'Gestione flessibile di commesse e progetti interni.'},
       {icon:'📋',title:'Subappalti',desc:'Ditte esterne, contratti a corpo o a ore.'},
       {icon:'📄',title:'Rapportini Giornalieri',desc:'Tracciamento squadra, tempi precisi e spese extra.'},
       {icon:'📑',title:'Analisi dei Margini',desc:'Costi e ricavi per valutare la redditività dei lavori.'}
@@ -264,16 +257,16 @@ var I18N = {
       rapportini:{icon:'📄',color:'#3b82f6',title:'Rapportini',desc:'Rendicontazione giornaliera veloce.',groups:[{title:'Esecuzione',color:'#3b82f6',items:[{name:'Tempi Reali',desc:'Tracciamento Inizio/Fine/Pausa.'},{name:'Spese',desc:'Pasti, materiali e parcheggi.'}]},{title:'Gestione',color:'#3b82f6',items:[{name:'Caposquadra',desc:"L'Incaricato inserisce i dati per tutto il team."}]}]},
       sommario:{icon:'📑',color:'#8b5cf6',title:'Analisi Economica',desc:'Controllo margini in tempo reale.',groups:[{title:'Analisi',color:'#8b5cf6',items:[{name:'Real-Time',desc:"Margini e costi calcolati all'istante."},{name:'Export',desc:'Dati in Excel o PDF.'}]}]},
       profilo:{icon:'👤',color:'#6b7280',title:'Profilo',desc:'Impostazioni account.',groups:[{title:'Account',color:'#6b7280',items:[{name:'Sicurezza',desc:'Accessi e lingua.'}]}]},
-      assistenza:{icon:'❓',color:'#2563eb',title:'Assistenza',desc:'Guide e supporto.',groups:[{title:'Guida',color:'#2563eb',items:[{name:'Installazione',desc:'Aggiungi l\'app alla home screen.'},{name:'Supporto',desc:"Contatta l'amministratore di sistema."}]}]}
+      assistenza:{icon:'❓',color:'#2563eb',title:'Assistenza',desc:'Guide e supporto.',groups:[{title:'Guida',color:'#2563eb',items:[{name:'Installazione',desc:"Aggiungi l'app alla home screen."},{name:'Supporto',desc:"Contatta l'amministratore di sistema."}]}]}
     }
   },
   en: {
     sidebar:['Clients','Personnel','Projects','Subcontracts','Timesheets','Work Summary','Profile','Support'],
-    esci:'Exit', sectionLabel:'Key Features', demoCta:'Request a free demo →',
+    sectionLabel:'Key Features', demoCta:'Request a free demo →',
     footerRights:'All rights reserved', overlayTitle:'Welcome to JobsReport',
-    overlaySub:'Choose your language to start the presentation',
-    modal:{title:'Request a free demo', sub:'Fill in the form and we will contact you shortly.', nome:'Full Name *', azienda:'Company', email:'Email *', tel:'Phone', msg:'Message', btn:'Send request →', successTitle:'Request sent!', successMsg:'Thank you for your interest. We will contact you soon.', alert:'Please fill in Name and Email.'},
+    overlaySub:'Choose your language to start',
     hero:{tag:'The value of experience',title:'Timesheets and real-time cost control',desc:'Built after 30+ years of hands-on field experience. JobsReport is the practical tool born from the real needs of those managing construction sites every day.'},
+    modal:{title:'Request a free demo', sub:'Fill in the form and we will contact you shortly.', nome:'Full Name *', azienda:'Company', email:'Email *', tel:'Phone', msg:'Message', btn:'Send request →', successTitle:'Request sent!', successMsg:'Thank you for your interest. We will contact you soon.', alert:'Please fill in Name and Email.'},
     menu:[
       {icon:'👥',title:'Client Registry',desc:'Contact management linked to projects and timesheets.'},
       {icon:'🛡️',title:'Personnel Management',desc:'Multilingual onboarding, roles and cost control.'},
@@ -285,7 +278,7 @@ var I18N = {
     sections:{
       clienti:{icon:'👥',color:'#10b981',title:'Clients',desc:'Essential registry for your sites.',groups:[{title:'Data',color:'#10b981',items:[{name:'Client form',desc:'Company name, VAT and contacts.'},{name:'Status',desc:'Active/Inactive.'}]}]},
       personale:{icon:'🛡️',color:'#ef4444',title:'Personnel',desc:'Team management and onboarding.',groups:[{title:'Roles',color:'#ef4444',items:[{name:'Onboarding',desc:"Send app instructions in the worker's language."},{name:'Roles',desc:'Worker, Supervisor or Admin.'}]}]},
-      progetti:{icon:'💼',color:'#f59e0b',title:'Projects',desc:'Sites and internal activities.',groups:[{title:'Type',color:'#f59e0b',items:[{name:'Clients vs Internal',desc:'Orders or activities like Absences/Leave.'},{name:'Budgeting',desc:'Hourly or lump-sum work.'}]}]},
+      progetti:{icon:'💼',color:'#f59e0b',title:'Projects',desc:'Sites and internal activities.',groups:[{title:'Type',color:'#f59e0b',items:[{name:'Clients vs Internal',desc:'Orders or activities like Absences.'},{name:'Budgeting',desc:'Hourly or lump-sum work.'}]}]},
       subappalti:{icon:'📋',color:'#06b6d4',title:'Subcontracts',desc:'External firms with cost control.',groups:[{title:'Partners',color:'#06b6d4',items:[{name:'Firm Management',desc:'Subcontractor registry.'},{name:'External Costs',desc:'Lump-sum or hourly monitoring.'}]}]},
       rapportini:{icon:'📄',color:'#3b82f6',title:'Timesheets',desc:'Fast daily reporting.',groups:[{title:'Execution',color:'#3b82f6',items:[{name:'Real Time',desc:'Start/End/Break tracking.'},{name:'Expenses',desc:'Meals, materials and parking.'}]},{title:'Management',color:'#3b82f6',items:[{name:'Team Leader',desc:'Supervisors enter data for the whole team.'}]}]},
       sommario:{icon:'📑',color:'#8b5cf6',title:'Economic Analysis',desc:'Real-time margin control.',groups:[{title:'Analysis',color:'#8b5cf6',items:[{name:'Real-Time',desc:'Net margins and costs instantly.'},{name:'Export',desc:'Data in Excel or PDF.'}]}]},
@@ -295,11 +288,11 @@ var I18N = {
   },
   es: {
     sidebar:['Clientes','Personal','Proyectos','Subcontratas','Partes','Resumen','Perfil','Asistencia'],
-    esci:'Salir', sectionLabel:'Funcionalidades Clave', demoCta:'Solicitar demo gratuita →',
+    sectionLabel:'Funcionalidades Clave', demoCta:'Solicitar demo gratuita →',
     footerRights:'Todos los derechos reservados', overlayTitle:'Bienvenido a JobsReport',
     overlaySub:'Elige tu idioma para comenzar',
-    modal:{title:'Solicitar demo gratuita', sub:'Rellena el formulario y te contactaremos pronto.', nome:'Nombre y Apellido *', azienda:'Empresa', email:'Email *', tel:'Teléfono', msg:'Mensaje', btn:'Enviar solicitud →', successTitle:'¡Solicitud enviada!', successMsg:'Gracias por tu interés. Te contactaremos pronto.', alert:'Por favor completa Nombre y Email.'},
     hero:{tag:'El valor de la experiencia',title:'Partes de trabajo y control de costes en tiempo real',desc:'Creado tras más de 30 años de experiencia directa. JobsReport es la herramienta práctica nacida de las necesidades reales de quienes gestionan la obra cada día.'},
+    modal:{title:'Solicitar demo gratuita', sub:'Rellena el formulario y te contactaremos pronto.', nome:'Nombre y Apellido *', azienda:'Empresa', email:'Email *', tel:'Teléfono', msg:'Mensaje', btn:'Enviar solicitud →', successTitle:'¡Solicitud enviada!', successMsg:'Gracias por tu interés. Te contactaremos pronto.', alert:'Por favor completa Nombre y Email.'},
     menu:[
       {icon:'👥',title:'Clientes',desc:'Gestión de contactos vinculada a proyectos y partes.'},
       {icon:'🛡️',title:'Personal',desc:'Incorporación multilingüe, roles y control de costes.'},
@@ -321,11 +314,11 @@ var I18N = {
   },
   pl: {
     sidebar:['Klienci','Personel','Projekty','Podwykonawcy','Raporty','Podsumowanie','Profil','Pomoc'],
-    esci:'Wyjdź', sectionLabel:'Kluczowe funkcje', demoCta:'Poproś o darmowe demo →',
+    sectionLabel:'Kluczowe funkcje', demoCta:'Poproś o darmowe demo →',
     footerRights:'Wszelkie prawa zastrzeżone', overlayTitle:'Witaj w JobsReport',
     overlaySub:'Wybierz język, aby rozpocząć',
-    modal:{title:'Poproś o darmowe demo', sub:'Wypełnij formularz, a skontaktujemy się z Tobą wkrótce.', nome:'Imię i Nazwisko *', azienda:'Firma', email:'Email *', tel:'Telefon', msg:'Wiadomość', btn:'Wyślij zgłoszenie →', successTitle:'Zgłoszenie wysłane!', successMsg:'Dziękujemy za zainteresowanie. Skontaktujemy się wkrótce.', alert:'Proszę wypełnić Imię i Email.'},
     hero:{tag:'Wartość doświadczenia',title:'Raporty i kontrola kosztów w czasie rzeczywistym',desc:'Stworzony po 30+ latach doświadczenia w terenie. JobsReport to narzędzie zrodzone z realnych potrzeb osób zarządzających budową.'},
+    modal:{title:'Poproś o darmowe demo', sub:'Wypełnij formularz, a skontaktujemy się z Tobą wkrótce.', nome:'Imię i Nazwisko *', azienda:'Firma', email:'Email *', tel:'Telefon', msg:'Wiadomość', btn:'Wyślij zgłoszenie →', successTitle:'Zgłoszenie wysłane!', successMsg:'Dziękujemy za zainteresowanie. Skontaktujemy się wkrótce.', alert:'Proszę wypełnić Imię i Email.'},
     menu:[
       {icon:'👥',title:'Klienci',desc:'Zarządzanie kontaktami powiązane z projektami.'},
       {icon:'🛡️',title:'Personel',desc:'Wielojęzyczny onboarding, role i kontrola kosztów.'},
@@ -347,11 +340,11 @@ var I18N = {
   },
   tr: {
     sidebar:['Müşteriler','Personel','Projeler','Alt Yükleniciler','Raporlar','İş Özeti','Profil','Destek'],
-    esci:'Çıkış', sectionLabel:'Temel Özellikler', demoCta:'Ücretsiz demo iste →',
+    sectionLabel:'Temel Özellikler', demoCta:'Ücretsiz demo iste →',
     footerRights:'Tüm hakları saklıdır', overlayTitle:"JobsReport'a Hoş Geldiniz",
     overlaySub:'Sunuma başlamak için dilinizi seçin',
+    hero:{tag:'Deneyimin değeri',title:'Günlük raporlar ve gerçek zamanlı maliyet kontrolü',desc:'30 yılı aşkın sahada edinilen deneyimle oluşturuldu. JobsReport, şantiyeyi her gün yönetenlerin gerçek ihtiyaçlarından doğan pratik bir araçtır.'},
     modal:{title:'Ücretsiz demo iste', sub:'Formu doldurun, en kısa sürede sizinle iletişime geçeceğiz.', nome:'Ad ve Soyad *', azienda:'Şirket', email:'Email *', tel:'Telefon', msg:'Mesaj', btn:'İstek gönder →', successTitle:'İstek gönderildi!', successMsg:'İlginiz için teşekkürler. En kısa sürede sizinle iletişime geçeceğiz.', alert:'Lütfen Ad ve Email alanlarını doldurun.'},
-    hero:{tag:'Deneyimin değeri',title:'Günlük raporlar ve gerçek zamanlı maliyet kontrolü',desc:"30 yılı aşkın sahada edinilen deneyimle oluşturuldu. JobsReport, şantiyeyi her gün yönetenlerin gerçek ihtiyaçlarından doğan pratik bir araçtır."},
     menu:[
       {icon:'👥',title:'Müşteriler',desc:'Projeler ve raporlarla bağlantılı iletişim yönetimi.'},
       {icon:'🛡️',title:'Personel',desc:'Çok dilli işe alım, roller ve maliyet kontrolü.'},
@@ -362,7 +355,7 @@ var I18N = {
     ],
     sections:{
       clienti:{icon:'👥',color:'#10b981',title:'Müşteriler',desc:'Şantiyeler için temel kayıt.',groups:[{title:'Veriler',color:'#10b981',items:[{name:'Müşteri kartı',desc:'Şirket adı, Vergi No ve iletişim.'},{name:'Durum',desc:'Aktif/Pasif.'}]}]},
-      personale:{icon:'🛡️',color:'#ef4444',title:'Personel',desc:'Ekip yönetimi ve işe alım.',groups:[{title:'Roller',color:'#ef4444',items:[{name:'İşe alım',desc:"Çalışanın dilinde uygulama talimatları."},{name:'Roller',desc:'İşçi, Sorumlu veya Admin.'}]}]},
+      personale:{icon:'🛡️',color:'#ef4444',title:'Personel',desc:'Ekip yönetimi ve işe alım.',groups:[{title:'Roller',color:'#ef4444',items:[{name:'İşe alım',desc:'Çalışanın dilinde uygulama talimatları.'},{name:'Roller',desc:'İşçi, Sorumlu veya Admin.'}]}]},
       progetti:{icon:'💼',color:'#f59e0b',title:'Projeler',desc:'Şantiyeler ve iç faaliyetler.',groups:[{title:'Tür',color:'#f59e0b',items:[{name:'Müşteriler vs İç',desc:'Siparişler veya izin gibi faaliyetler.'},{name:'Bütçeleme',desc:'Saatlik veya götürü işler.'}]}]},
       subappalti:{icon:'📋',color:'#06b6d4',title:'Alt Yükleniciler',desc:'Maliyet kontrolü ile dış firmalar.',groups:[{title:'Ortaklar',color:'#06b6d4',items:[{name:'Yönetim',desc:'Alt yüklenici sicili.'},{name:'Maliyetler',desc:'Götürü veya saatlik takip.'}]}]},
       rapportini:{icon:'📄',color:'#3b82f6',title:'Raporlar',desc:'Hızlı günlük raporlama.',groups:[{title:'Uygulama',color:'#3b82f6',items:[{name:'Gerçek Zamanlı',desc:'Başlangıç/Bitiş takibi.'},{name:'Giderler',desc:'Yemek, malzeme ve otopark.'}]},{title:'Yönetim',color:'#3b82f6',items:[{name:'Ekip Lideri',desc:'Sorumlular tüm ekip için veri girer.'}]}]},
@@ -373,11 +366,11 @@ var I18N = {
   },
   da: {
     sidebar:['Klienter','Personale','Projekter','Underentreprenører','Rapporter','Oversigt','Profil','Support'],
-    esci:'Afslut', sectionLabel:'Nøglefunktioner', demoCta:'Anmod om gratis demo →',
+    sectionLabel:'Nøglefunktioner', demoCta:'Anmod om gratis demo →',
     footerRights:'Alle rettigheder forbeholdes', overlayTitle:'Velkommen til JobsReport',
     overlaySub:'Vælg dit sprog for at starte',
-    modal:{title:'Anmod om gratis demo', sub:'Udfyld formularen, så kontakter vi dig snarest.', nome:'Navn og Efternavn *', azienda:'Virksomhed', email:'Email *', tel:'Telefon', msg:'Besked', btn:'Send anmodning →', successTitle:'Anmodning sendt!', successMsg:'Tak for din interesse. Vi kontakter dig snarest.', alert:'Udfyld venligst Navn og Email.'},
     hero:{tag:'Værdien af erfaring',title:'Dagsrapporter og omkostningskontrol i realtid',desc:'Skabt efter 30+ års erfaring på feltet. JobsReport er det praktiske værktøj født af de reelle behov hos dem, der administrerer byggepladser hver dag.'},
+    modal:{title:'Anmod om gratis demo', sub:'Udfyld formularen, så kontakter vi dig snarest.', nome:'Navn og Efternavn *', azienda:'Virksomhed', email:'Email *', tel:'Telefon', msg:'Besked', btn:'Send anmodning →', successTitle:'Anmodning sendt!', successMsg:'Tak for din interesse. Vi kontakter dig snarest.', alert:'Udfyld venligst Navn og Email.'},
     menu:[
       {icon:'👥',title:'Klienter',desc:'Kontaktstyring knyttet til projekter og rapporter.'},
       {icon:'🛡️',title:'Personale',desc:'Flersproget onboarding, roller og omkostningsstyring.'},
@@ -404,12 +397,12 @@ function buildSidebar() {
   var nav = document.getElementById('sidebarNav');
   nav.innerHTML = '';
   ALL_KEYS.forEach(function(key, i) {
-    var d = document.createElement('div');
-    d.className = 'sidebar-item';
-    d.dataset.key = key;
-    d.innerHTML = '<span class="sidebar-icon">'+I18N['it'].sections[key].icon+'</span> <span>'+L.sidebar[i]+'</span>';
-    d.addEventListener('click', function() { openPanel(key, d, true); });
-    nav.appendChild(d);
+    var el = document.createElement('div');
+    el.className = 'sidebar-item';
+    el.dataset.key = key;
+    el.innerHTML = '<span class="sidebar-icon">'+I18N.it.sections[key].icon+'</span> '+L.sidebar[i];
+    el.addEventListener('click', function(){ openPanel(key); });
+    nav.appendChild(el);
   });
 }
 
@@ -417,15 +410,14 @@ function buildMenu() {
   var L = I18N[currentLang];
   var list = document.getElementById('menuList');
   list.innerHTML = '';
-  var colors = ['ic-green','ic-red','ic-orange','ic-teal','ic-blue','ic-purple'];
   MENU_KEYS.forEach(function(key, i) {
     var m = L.menu[i];
-    var d = document.createElement('div');
-    d.className = 'menu-item';
-    d.dataset.key = key;
-    d.innerHTML = '<div class="menu-icon '+colors[i]+'">'+m.icon+'</div><div class="menu-text"><strong>'+m.title+'</strong><p>'+m.desc+'</p></div><span class="chevron">›</span>';
-    d.addEventListener('click', function() { openPanel(key, d, false); });
-    list.appendChild(d);
+    var el = document.createElement('div');
+    el.className = 'menu-item';
+    el.dataset.key = key;
+    el.innerHTML = '<div class="menu-icon '+MENU_COLORS[i]+'">'+m.icon+'</div><div class="menu-text"><strong>'+m.title+'</strong><p>'+m.desc+'</p></div><span class="chevron">›</span>';
+    el.addEventListener('click', function(){ openPanel(key); });
+    list.appendChild(el);
   });
 }
 
@@ -434,10 +426,7 @@ function setLanguage(lang) {
   document.getElementById('currentLangLabel').textContent = lang.toUpperCase();
   document.getElementById('langDropdown').classList.remove('show');
   document.getElementById('langOverlay').classList.remove('visible');
-
-  document.querySelectorAll('.lang-item').forEach(function(el) {
-    el.classList.toggle('active', el.dataset.lang === lang);
-  });
+  document.querySelectorAll('.lang-item').forEach(function(el){ el.classList.toggle('active', el.dataset.lang === lang); });
 
   var L = I18N[lang];
   document.getElementById('overlayTitle').textContent = L.overlayTitle;
@@ -447,9 +436,8 @@ function setLanguage(lang) {
   document.getElementById('heroTitle').textContent = L.hero.title;
   document.getElementById('heroDesc').textContent = L.hero.desc;
   document.getElementById('sectionLabel').textContent = L.sectionLabel;
-  document.getElementById('esciLabel').textContent = L.esci;
   document.getElementById('demoCtaBtn').textContent = L.demoCta;
-  // modal labels
+  // modal
   document.getElementById('modalTitle').textContent = L.modal.title;
   document.getElementById('modalSub').textContent = L.modal.sub;
   document.getElementById('lblNome').textContent = L.modal.nome;
@@ -463,34 +451,26 @@ function setLanguage(lang) {
 
   buildSidebar();
   buildMenu();
-
-  if (openKey) openPanel(openKey, null, null);
+  if (openKey) openPanel(openKey);
 }
 
-function openPanel(key, el, isSidebar) {
+function openPanel(key) {
   openKey = key;
-  var L = I18N[currentLang];
-  var s = L.sections[key];
+  var s = I18N[currentLang].sections[key];
   if (!s) return;
 
-  // clear selections
-  document.querySelectorAll('.menu-item').forEach(function(x){ x.classList.remove('selected'); });
-  document.querySelectorAll('.sidebar-item').forEach(function(x){ x.classList.remove('active'); });
+  document.querySelectorAll('.menu-item').forEach(function(x){ x.classList.toggle('selected', x.dataset.key === key); });
+  document.querySelectorAll('.sidebar-item').forEach(function(x){ x.classList.toggle('active', x.dataset.key === key); });
 
-  // highlight correct elements
-  document.querySelectorAll('.menu-item').forEach(function(x){ if(x.dataset.key===key) x.classList.add('selected'); });
-  document.querySelectorAll('.sidebar-item').forEach(function(x){ if(x.dataset.key===key) x.classList.add('active'); });
-
-  // fill panel
   document.getElementById('panelIcon').style.background = s.color;
   document.getElementById('panelIcon').textContent = s.icon;
   document.getElementById('panelTitle').textContent = s.title;
   document.getElementById('panelDesc').textContent = s.desc;
 
   var html = '';
-  s.groups.forEach(function(g) {
+  s.groups.forEach(function(g){
     html += '<div class="feature-group"><div class="feature-group-title">'+g.title+'</div>';
-    g.items.forEach(function(f) {
+    g.items.forEach(function(f){
       html += '<div class="feature-item"><div class="feature-dot" style="background:'+g.color+'"></div><p><strong>'+f.name+'</strong> — '+f.desc+'</p></div>';
     });
     html += '</div>';
@@ -504,18 +484,13 @@ function closePanel() {
   openKey = null;
   document.getElementById('detailPanel').classList.remove('open');
   document.getElementById('main').classList.remove('panel-open');
-  document.querySelectorAll('.menu-item').forEach(function(x){ x.classList.remove('selected'); });
-  document.querySelectorAll('.sidebar-item').forEach(function(x){ x.classList.remove('active'); });
+  document.querySelectorAll('.menu-item, .sidebar-item').forEach(function(x){ x.classList.remove('selected','active'); });
 }
 
 function openModal() {
   document.getElementById('modalFormWrap').style.display = 'block';
   document.getElementById('modalSuccessWrap').style.display = 'none';
-  document.getElementById('fNome').value = '';
-  document.getElementById('fAzienda').value = '';
-  document.getElementById('fEmail').value = '';
-  document.getElementById('fTel').value = '';
-  document.getElementById('fMsg').value = '';
+  ['fNome','fAzienda','fEmail','fTel','fMsg'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('demoModal').classList.add('visible');
 }
 
@@ -527,58 +502,33 @@ function submitDemo() {
   var nome  = document.getElementById('fNome').value.trim();
   var email = document.getElementById('fEmail').value.trim();
   if (!nome || !email) { alert(I18N[currentLang].modal.alert); return; }
-  var body = 'Nome: '+nome+
-    (document.getElementById('fAzienda').value.trim() ? '\nAzienda: '+document.getElementById('fAzienda').value.trim() : '')+
-    '\nEmail: '+email+
-    (document.getElementById('fTel').value.trim() ? '\nTelefono: '+document.getElementById('fTel').value.trim() : '')+
-    (document.getElementById('fMsg').value.trim() ? '\n\nMessaggio:\n'+document.getElementById('fMsg').value.trim() : '')+
-    '\n\n---\nInviato dal modulo JobsReport';
+  var az  = document.getElementById('fAzienda').value.trim();
+  var tel = document.getElementById('fTel').value.trim();
+  var msg = document.getElementById('fMsg').value.trim();
+  var body = 'Nome: '+nome+(az?'\nAzienda: '+az:'')+'\nEmail: '+email+(tel?'\nTelefono: '+tel:'')+(msg?'\n\nMessaggio:\n'+msg:'')+'\n\n---\nInviato dal modulo JobsReport';
   window.location.href = 'mailto:jtw@live.it?subject='+encodeURIComponent('Richiesta demo – JobsReport')+'&body='+encodeURIComponent(body);
   document.getElementById('modalFormWrap').style.display = 'none';
   document.getElementById('modalSuccessWrap').style.display = 'block';
 }
 
-// Wire up events after DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-  // lang dropdown toggle
-  document.getElementById('langBtn').addEventListener('click', function(e) {
+  document.getElementById('langBtn').addEventListener('click', function(e){
     e.stopPropagation();
     document.getElementById('langDropdown').classList.toggle('show');
   });
-
-  // lang items in dropdown
-  document.querySelectorAll('#langDropdown .lang-item').forEach(function(el) {
-    el.addEventListener('click', function() { setLanguage(el.dataset.lang); });
+  document.querySelectorAll('#langDropdown .lang-item').forEach(function(el){
+    el.addEventListener('click', function(){ setLanguage(el.dataset.lang); });
   });
-
-  // lang overlay options
-  document.querySelectorAll('#langOverlay .lang-opt').forEach(function(el) {
-    el.addEventListener('click', function() { setLanguage(el.dataset.lang); });
+  document.querySelectorAll('#langOverlay .lang-opt').forEach(function(el){
+    el.addEventListener('click', function(){ setLanguage(el.dataset.lang); });
   });
-
-  // close panel button
   document.getElementById('closePanelBtn').addEventListener('click', closePanel);
-
-  // demo cta button
   document.getElementById('demoCtaBtn').addEventListener('click', openModal);
-
-  // close modal button
   document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-
-  // submit form
   document.getElementById('submitBtn').addEventListener('click', submitDemo);
+  document.getElementById('demoModal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+  document.addEventListener('click', function(){ document.getElementById('langDropdown').classList.remove('show'); });
 
-  // close modal clicking outside
-  document.getElementById('demoModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  // close dropdown clicking outside
-  document.addEventListener('click', function() {
-    document.getElementById('langDropdown').classList.remove('show');
-  });
-
-  // init
   setLanguage('it');
   document.getElementById('langOverlay').classList.add('visible');
 });
